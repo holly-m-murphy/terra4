@@ -27,8 +27,12 @@ variable "env-name"{
   default = "pre-prod"
 }
 
+variable "multi-region"{
+  default = true
+}
+
 resource "aws_instance" "taco-frontend" {
-  count = 2
+  count = 1
   availability_zone = "${var.zones[count.index]}"
   depends_on = ["aws_instance.taco-backend"]
   ami = "ami-08660f1c6fb6b01e7"
@@ -58,7 +62,7 @@ output "taco_frontend_ip"{
 }
 
 resource "aws_instance" "taco-backend" {
-  count = 2
+  count = "${var.multi-region ? 1:2}"
   availability_zone = "${var.zones-2[count.index]}"
   ami = "ami-0e7589a8422e3270f"
   instance_type = "t2.micro"
