@@ -27,6 +27,11 @@ variable "env-name"{
   default = "pre-prod"
 }
 
+locals {
+  default_frontend_name = "${join("-",list(var.env-name, "taco-frontend"))}" 
+  default_backend_name = "${join("-",list(var.env-name, "taco-backend"))}"  
+}
+
 variable "multi-region"{
   default = true
 }
@@ -39,7 +44,7 @@ resource "aws_instance" "taco-frontend" {
   instance_type = "t2.micro"
   key_name = "taco"
   tags = {
-    Name = "${join("-",list(var.env-name, "taco-frontend"))}"
+    Name = "${local.default_frontend_name}"
   }
   security_groups = ["default"]
   provisioner "remote-exec"{
@@ -68,7 +73,7 @@ resource "aws_instance" "taco-backend" {
   instance_type = "t2.micro"
   key_name = "taco"
   tags = {
-    Name = "${join("-",list(var.env-name, "taco-backend"))}"
+    Name = "${local.default_backend_name}"
   }
   security_groups = ["default"]
   provider = "aws.us-east-2"
