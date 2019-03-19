@@ -37,7 +37,7 @@ variable "multi-region"{
 
 resource "aws_instance" "taco-frontend" {
   count = 1
-  availability_zone = "${var.zones[count.index]}"
+  availability_zone = "${data.aws_availability_zones.zones[count.index]}"
   depends_on = ["aws_instance.taco-backend"]
   ami = "ami-08660f1c6fb6b01e7"
   instance_type = "t2.micro"
@@ -67,7 +67,7 @@ output "taco_frontend_ip"{
 
 resource "aws_instance" "taco-backend" {
   count = "${var.multi-region ? 2:1}"
-  availability_zone = "${var.zones-2[count.index]}"
+  availability_zone = "${data.aws_availability_zones.zones-2[count.index]}"
   ami = "ami-0e7589a8422e3270f"
   instance_type = "t2.micro"
   key_name = "taco"
