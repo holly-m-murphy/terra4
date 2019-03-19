@@ -15,12 +15,11 @@ provider "aws" {
   region = "us-east-2"
 }
 
-variable "zones"{
-  default = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+data "aws_availability_zones" "zones"{
 }
 
-variable "zones-2"{
-  default = ["us-east-2a", "us-east-2b"]
+data "aws_availability_zones" "zones-2"{
+  provider = "aws.useast"  
 }
 
 variable "env-name"{
@@ -67,7 +66,7 @@ output "taco_frontend_ip"{
 }
 
 resource "aws_instance" "taco-backend" {
-  count = "${var.multi-region ? 1:2}"
+  count = "${var.multi-region ? 2:1}"
   availability_zone = "${var.zones-2[count.index]}"
   ami = "ami-0e7589a8422e3270f"
   instance_type = "t2.micro"
