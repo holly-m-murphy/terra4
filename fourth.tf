@@ -1,7 +1,7 @@
 terraform{
   backend "s3" {
    bucket="table2hmterraform"
-   key="terra4/state"
+   key="terrafour/state"
    region="eu-west-1"
   }
 }
